@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">CoolWeather</string>
+    <string name="permission_request">This app needs permission</string>
+    <string name="split">~</string>
+</resources>
