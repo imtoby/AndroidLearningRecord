@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Syber_QRCode_Scanner</string>
+    <string name="torch_switch">打开闪关灯</string>
+    <string name="start_scanner">开始扫描</string>
+</resources>
