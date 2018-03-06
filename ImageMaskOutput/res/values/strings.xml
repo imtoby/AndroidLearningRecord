@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ImageMaskOutputor</string>
+    <string name="original">original</string>
+    <string name="mask">mask</string>
+</resources>
