@@ -1,0 +1,174 @@
+## 策略模式 ##
+
+### 1. 策略模式介绍 ###
+
+在软件开发中也常常遇到这样的情况：实现某一个功能可以有多种算法或者策略，我们根据实际情况选择不同的算法或者策略来完成该功能。例如，排序算法，可以使用插入排序、归并排序、冒泡排序等。
+
+针对这种情况，一种常规的方法是将多种算法写在一个类中。例如，需要提供多种排序算法，可以将这些算法写到一个类中，每一个方法对应一个具体的排序算法；当然，也可以将这些排序算法封装在一个统一的方法中，通过 if...else... 或者 case 等条件判断语句来选择具体的算法。这两种实现方法我们都可以称为硬编码。然而，当很多个算法集中在一个类中时，这个类就会变得臃肿，这个类的维护成本会变高，在维护时也更容易引发错误。如果我们需要增加一种新的排序算法，需要修改封装算法类的源代码。这就明显违反了 OCP 原则和单一职责原则。
+
+如果将这些算法或者策略抽象出来，提供一个统一的接口，不同的算法或者策略有不同的实现类，这样在程序客户端就可以通过注入不同的实现对象来实现算法或者策略的动态替换，这种模式的可扩展性、可维护性也就更高，这就是策略模式。
+
+### 2. 策略模式的定义 ###
+
+策略模式定义了一系列的算法，并将，每一个算法封装起来，而且使它们还可以相互替换。策略模式让算法独立于使用它的客户而独立变化。
+
+### 3. 策略模式的使用场景 ###
+
+（1） 针对同一类型问题的多种处理方式，仅仅是具体行为有差别时；
+（2） 需要安全地封装多种同一类型的操作时；
+（3） 出现同一抽象类有多个子类，而又需要使用 if-else 或者 switch-case 来选择具体子类时。
+
+### 4.策略模式的简单实现 ###
+
+通常如果一个问题有多个解决方案时，最简单的方式就是利用 if-else 或者 switch-case 方式根据不同的情景选择不同的解决方案，但这种简单的方案的问题太多，例如耦合性太高、代码臃肿、难以维护等。但是，如果解决方案中包括大量的处理逻辑需要封装，或者处理方式变动较大的时候则就显得混乱、复杂，当需要增加一种方案时就需要修改类中的代码。
+
+if-else 或者 switch-case 这种方法确实不会遵循开闭原则，而应对这种情况策略模式就能很好地解决这个问题，它将各种方案分离开来，让程序客户端根据具体的需求来动态地选择不同的策略方案。
+
+下面是一个原始的示例代码：
+
+```java
+/**
+ * Created by toby on 18-3-21.
+ * 北京公交车地铁出行计价器
+ */
+
+public class PriceCalculator {
+    private final static int TYPE_BUS = 1;
+    private final static int TYPE_SUBWAY = 2;
+
+    /**
+     * 公交车，十公里之内一元，超过十公里之后每加一元可以乘坐五公里
+     *
+     * @param km
+     * @return price
+     */
+    private int busPrice(final int km) {
+        if (km <= 10) {
+            return 1;
+        }
+        int extraTotal = km - 10;
+        int extraFactor = extraTotal / 5;
+        int fraction = extraTotal % 5;
+        int price = 1 + extraFactor;
+        return fraction > 0 ? ++price : price;
+    }
+
+    private int subwayPrice(int km) {
+        if (km <= 6) {
+            return 3;
+        } else if (km > 6 && km <= 12) {
+            return 4;
+        } else if (km > 12 && km <= 22) {
+            return 5;
+        } else if (km > 22 && km <= 32) {
+            return 6;
+        }
+
+        // 其他距离简化为 7 元
+        return 7;
+    }
+
+    int calculatePrice(int km, int type) {
+        if (TYPE_BUS == type) {
+            return busPrice(km);
+        } else if (TYPE_SUBWAY == type) {
+            return subwayPrice(km);
+        }
+        return 0;
+    }
+}
+```
+
+PriceCalculator 类很明显的问题就是并不是单一职责，首先它承担了计算公交车和地铁乘坐价格的职责；另一个问题就是通过 if-else 的形式来判断使用哪种计算形式。当我们增加一种出行方式时，如出租车，那么我们就需要在 PriceCalculator 中增加一个方法来计算出租车出行的价格，并且在 calculatePrice(int km, int type) 函数中增加一个判断。
+
+我们还是使用策略模式来进行相关的处理，看看如何解耦。
+
+```java
+// 计算接口类
+public interface CalculateStrategy {
+    int calculatePrice(final int km);
+}
+
+
+// 公交车价格计算策略
+public class BusStrategy implements CalculateStrategy {
+    @Override
+    public int calculatePrice(final int km) {
+        if (km <= 10) {
+            return 1;
+        }
+        int extraTotal = km - 10;
+        int extraFactor = extraTotal / 5;
+        int fraction = extraTotal % 5;
+        int price = 1 + extraFactor;
+        return fraction > 0 ? ++price : price;
+    }
+}
+
+
+// 地铁价格计算策略
+public class SubwayStrategy implements CalculateStrategy {
+    @Override
+    public int calculatePrice(final int km) {
+        if (km <= 6) {
+            return 3;
+        } else if (km > 6 && km <= 12) {
+            return 4;
+        } else if (km > 12 && km <= 22) {
+            return 5;
+        } else if (km > 22 && km <= 32) {
+            return 6;
+        }
+
+        // 其他距离简化为 7 元
+        return 7;
+    }
+}
+
+
+// 定义一个 Context 的角色。并测试公交车计价。
+public class TrafficCalculator {
+
+    CalculateStrategy strategy;
+
+    public void setStrategy(CalculateStrategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public int calculatePrice(final int km) {
+        return strategy.calculatePrice(km);
+    }
+
+    public static void main(String[] args) {
+        TrafficCalculator calculator = new TrafficCalculator();
+        calculator.setStrategy(new BusStrategy());
+        System.out.println("16 km bus price: " + calculator.calculatePrice(16));
+    }
+
+}
+```
+
+通过上面的方案，可扩展性变得很强，当我们增加出租车的计算策略时，只需要添加一个出租车计算策略类，然后将该策略设置给 TrafficCalculator，最后直接调用 TrafficCalculator 的计算方法即可。
+
+```java
+public class TaxiStrategy implements CalculateStrategy {
+    @Override
+    public int calculatePrice(final int km) {
+        return km * 2;
+    }
+}
+```
+
+通过上述示例我们可以清晰地看出二者的区别所在。
+
+### 总结 ###
+
+策略模式主要用来分离算法，在相同的行为抽象下有不同的具体实现策略。这个模式很好地演示了开闭原则，也就是定义抽象，注入不同的实现，从而达到很好的可扩展性。
+
+优点：
+（1） 结构清晰明了、使用简单直观；
+（2） 耦合度相对而言较低，扩展方便；
+（3） 操作封装也更为彻底，数据更为安全。
+
+缺点：
+随着策略的增加，子类也会变得繁多。
