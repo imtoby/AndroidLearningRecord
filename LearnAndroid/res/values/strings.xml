@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">LearnAndroid</string>
+    <string name="input_some_text_here">Input some text here.</string>
+    <string name="save">Save</string>
+    <string name="load">load</string>
+    <string name="create">create</string>
+    <string name="add">add</string>
+    <string name="update">update</string>
+    <string name="delete">delete</string>
+    <string name="query">query</string>
+    <string name="replace">replace</string>
+    <string name="from">From:</string>
+    <string name="content">Content:</string>
+    <string name="permission_request">This app needs permission for camera and audio recording.</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="choose_from_album">Choose From Album</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="stop">Stop</string>
+    <string name="replay">replay</string>
+    <string name="start_service">Start Service</string>
+    <string name="stop_service">Stop Service</string>
+    <string name="bind_service">Bind Service</string>
+    <string name="unbind_service">Unbind Service</string>
+    <string name="start_intent_service">Start Intent Service</string>
+    <string name="send_request_with_http_url_connection">Send Request With HttpURLConnection</string>
+    <string name="send_request_with_http_client">Send Request With HttpClient</string>
+</resources>
