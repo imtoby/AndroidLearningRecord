@@ -81,6 +81,9 @@ public class ImportMenuView extends RelativeLayout implements RippleFinishListen
     }
 
     public void animationEnter(Context context) {
+        if (animating) {
+            return;
+        }
         animating = true;
         setEnabled(false);
         rl_close.setEnabled(false);
@@ -127,7 +130,7 @@ public class ImportMenuView extends RelativeLayout implements RippleFinishListen
                         ImportMenuView.this.setEnabled(true);
                         animating = false;
                     }
-                },1000);
+                },200);
             }
 
             @Override
@@ -138,7 +141,11 @@ public class ImportMenuView extends RelativeLayout implements RippleFinishListen
     }
 
     public void animationExit() {
+        if (animating) {
+            return;
+        }
         animating = true;
+        setEnabled(false);
         Animation top_ball_anim = AnimationUtils.loadAnimation(context,
                 R.anim.popup_button_top_exit);
         ll_top.startAnimation(top_ball_anim);
@@ -168,7 +175,7 @@ public class ImportMenuView extends RelativeLayout implements RippleFinishListen
                         R.anim.popup_button_fade_out);
                 closeExitAnimation();
                 view_shadow.startAnimation(view_fade_in_anim);
-
+                setEnabled(true);
                 animating = false;
             }
         });
@@ -219,6 +226,9 @@ public class ImportMenuView extends RelativeLayout implements RippleFinishListen
 
     @Override
     public void rippleFinish(int id) {
+        if (animating) {
+            return;
+        }
         switch (id) {
             case R.id.rl_close:
                 animationExit();
