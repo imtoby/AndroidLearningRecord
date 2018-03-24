@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Add Menu</string>
+    <string name="menu_item_new_danger">新建隐患</string>
+    <string name="menu_item_new_accident">新建事故</string>
+    <string name="menu_tem_new_risk">新建危险源</string>
+</resources>

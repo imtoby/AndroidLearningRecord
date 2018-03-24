@@ -1,0 +1,5 @@
+<resources>
+    <dimen name="popup_button_outer_size">100.0dp</dimen>
+    <dimen name="popup_button_inner_size">60.0dp</dimen>
+    <dimen name="popup_button_inner_radius">30.0dp</dimen>
+</resources>

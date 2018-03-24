@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <color name="color_normal">#2299DD</color>
+    <color name="color_normal_shadow">#3399DD</color>
+    <color name="color_pressed">#2288FF</color>
+    <color name="color_pressed_shadow">#1166FF</color>
+
+    <color name="grey_normal">#8A837C</color>
+</resources>

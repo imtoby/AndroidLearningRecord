@@ -1,0 +1,32 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ripple="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.lonuery.ripple.MainActivity">
+
+    <com.lonuery.ripple.RippleLayout
+        android:id="@+id/more2"
+        android:layout_width="@dimen/popup_button_outer_size"
+        android:layout_height="@dimen/popup_button_outer_size"
+        android:layout_gravity="bottom|end"
+        android:alpha="0.9"
+        ripple:rv_color="@color/color_normal"
+        ripple:rv_inner_radius="@dimen/popup_button_inner_radius">
+
+        <ImageButton
+            android:layout_width="@dimen/popup_button_inner_size"
+            android:layout_height="@dimen/popup_button_inner_size"
+            android:layout_centerInParent="true"
+            android:background="@drawable/selector_normal_ball"
+            android:contentDescription="@null"
+            android:scaleType="center"
+            android:src="@mipmap/popup_button_add" />
+    </com.lonuery.ripple.RippleLayout>
+
+    <com.lonuery.ripple.ImportMenuView
+        android:id="@+id/main_activity_import_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</FrameLayout>
